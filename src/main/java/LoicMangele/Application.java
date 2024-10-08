@@ -1,11 +1,55 @@
 package LoicMangele;
 
+import LoicMangele.dao.EventsDAO;
+import LoicMangele.entities.Evento;
+import LoicMangele.entities.TipoEvento;
+import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.Persistence;
 
+import java.time.LocalDate;
+
 public class Application {
-private static final EntityManagerFactory emf = Persistence.createEntityManagerFactory("E2W3");
+    private static final EntityManagerFactory emf = Persistence.createEntityManagerFactory("E2W3");
+
     public static void main(String[] args) {
-        System.out.println("Hello World!");
+
+        EntityManager em = emf.createEntityManager();
+        EventsDAO ev = new EventsDAO(em);
+
+
+        Evento beatles = new Evento(
+                "Beatles revival",
+                LocalDate.of(2024, 11, 11),
+                "cover delle più famose hit dei Beatles ",
+                TipoEvento.Privato,
+                500
+        );
+        Evento topOfThePops = new Evento(
+                "Top of the Pops",
+                LocalDate.of(2025, 07, 13),
+                "L'evento musicale estivo è tornato ",
+                TipoEvento.Publico,
+                7000
+        );
+
+
+        ev.save(beatles);
+        ev.save(topOfThePops);
+
+        try {
+            Evento fromDb = ev.getById(3);
+            System.out.println(fromDb);
+
+            ev.getById(1);
+
+        } catch (NotFoundException ex) {
+            System.out.println(ex.getMessage());
+        }
+
+
+        em.close();
+        emf.close();
     }
 }
+
