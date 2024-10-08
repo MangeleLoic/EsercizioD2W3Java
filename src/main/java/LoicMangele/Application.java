@@ -34,14 +34,14 @@ public class Application {
         );
 
 
-        ev.save(beatles);
-        ev.save(topOfThePops);
+        //ev.save(beatles);
+        //ev.save(topOfThePops);
 
         try {
-            Evento fromDb = ev.getById(3);
+            Evento fromDb = ev.getById(12);
             System.out.println(fromDb);
 
-            ev.getById(1);
+            ev.delete(12);
 
         } catch (NotFoundException ex) {
             System.out.println(ex.getMessage());
